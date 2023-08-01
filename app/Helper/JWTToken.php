@@ -6,15 +6,16 @@ use Exception;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+
 class JWTToken
 {
 
     public static function CreateToken($userEmail,$userID):string{
-        $key =env('JWT_KEY');
+        $key = (string) env('JWT_KEY');
         $payload=[
             'iss'=>'laravel-token',
             'iat'=>time(),
-            'exp'=>time()+60*60,
+            'exp'=>time()+60*30,
             'userEmail'=>$userEmail,
             'userID'=>$userID
         ];
@@ -23,11 +24,11 @@ class JWTToken
 
 
     public static function CreateTokenForSetPassword($userEmail):string{
-        $key =env('JWT_KEY');
+        $key = (string)env('JWT_KEY');
         $payload=[
             'iss'=>'laravel-token',
             'iat'=>time(),
-            'exp'=>time()+60*20,
+            'exp'=>time()+60*30,
             'userEmail'=>$userEmail,
             'userID'=>'0'
         ];
@@ -43,7 +44,7 @@ class JWTToken
                 return 'unauthorized';
             }
             else{
-                $key =env('JWT_KEY');
+                $key =(string)env('JWT_KEY');
                 $decode=JWT::decode($token,new Key($key,'HS256'));
                 return $decode;
             }
